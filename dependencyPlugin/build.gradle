@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'ivy-publish'
+
+group 'org.gradle.sample.plugin.dependencies'
+version '1.0'
+
+sourceCompatibility=1.7
+targetCompatibility=1.7
+
+dependencies {
+    compile gradleApi()
+}
+
+publishing {
+    repositories {
+        ivy { url 'build/repo' }
+    }
+    publications {
+        ivy(IvyPublication) {
+            from components.java
+        }
+    }
+}
