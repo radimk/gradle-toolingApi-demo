@@ -1,0 +1,17 @@
+initscript {
+    allprojects {
+
+        buildscript {
+            repositories {
+                flatDir name: 'plugin', dirs: '<PLUGIN_DIR>'
+            }
+            dependencies {
+                classpath ':dependencyPlugin:1.0'
+            }
+        }
+        afterEvaluate { project ->
+            project.apply plugin: 'dependencies'
+        }
+
+    }
+}

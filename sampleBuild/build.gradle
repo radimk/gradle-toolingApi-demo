@@ -1,13 +1,3 @@
-buildscript {
-    repositories {
-        ivy { url '../dependencyPlugin/build/repo' }
-    }
-    dependencies {
-        classpath 'org.gradle.sample.plugin.dependencies:dependencyPlugin:1.0'
-    }
-}
-
-apply plugin: 'dependencies'
 apply plugin: 'java'
 
 repositories {
