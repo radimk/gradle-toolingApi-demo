@@ -1,0 +1,23 @@
+apply plugin: 'application'
+
+def toolingApiVersion = gradle.gradleVersion
+
+repositories {
+    ivy {
+        url '../dependencyPlugin/build/repo'
+    }
+    maven {
+        url 'http://repo.gradle.org/gradle/libs-releases-local'
+    }
+    mavenCentral()
+}
+
+sourceCompatibility=1.7
+targetCompatibility=1.7
+
+dependencies {
+    compile project(':dependencyPlugin')
+}
+
+mainClassName = 'org.gradle.sample.Main'
+applicationDefaultJvmArgs = ["-Dproject.path=${rootDir}/sampleBuild"]
