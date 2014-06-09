@@ -17,6 +17,12 @@ targetCompatibility=1.7
 
 dependencies {
     compile project(':dependencyPlugin')
+
+    compile 'org.eclipse.jetty:jetty-server:9.1.5.v20140505'
+    compile 'org.eclipse.jetty:jetty-servlet:9.1.5.v20140505'
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.9'
+    compile 'org.glassfish.jersey.media:jersey-media-moxy:2.9'
+    compile 'com.google.guava:guava:17.0'
 }
 
 mainClassName = 'org.gradle.sample.Main'

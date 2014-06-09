@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Force-Directed Layout</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <style type="text/css">
+
+        circle {
+        stroke-width: 1.5px;
+        }
+
+        line {
+        stroke: #999;
+        }
+
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+
+var w = 960,
+    h = 500,
+    r = 6,
+    fill = d3.scale.category20();
+
+var force = d3.layout.force()
+    .charge(-120)
+    .linkDistance(80)
+    .size([w, h]);
+
+var svg = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+d3.json("gradle/dependencies", function(json) {
+  json.links.forEach(function(link) {
+      link.source = json.nodes.filter(function (node) { return node.name === link.source })[0];
+      link.target = json.nodes.filter(function (node) { return node.name === link.target})[0];
+  });
+  var link = svg.selectAll("line")
+      .data(json.links)
+    .enter().append("svg:line");
+
+  var node = svg.selectAll("circle")
+      .data(json.nodes)
+    .enter().append("svg:circle")
+      .attr("r", r - .75)
+      .style("fill", function(d) { return fill(d.group); })
+      .style("stroke", function(d) { return d3.rgb(fill(d.group)).darker(); })
+      .call(force.drag);
+
+  var text = svg.selectAll("text")
+      .data(json.nodes)
+    .enter().append("text")
+      .attr("x", 8)
+      .attr("y", ".31em")
+      // .attr("transform", "rotate(20)")
+      .text(function(d) { return d.name; });
+
+  force
+      .nodes(json.nodes)
+      .links(json.links)
+      .on("tick", tick)
+      .start();
+
+  function tick(e) {
+
+    // Push sources up and targets down to form a weak tree.
+    var k = 12 * e.alpha;
+    json.links.forEach(function(d, i) {
+      d.source.x -= k;
+      d.target.x += k;
+    });
+
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    text.attr("x", function(d) { return d.x; })
+        .attr("y", function(d) { return d.y; });
+        // .attr("transform", function(d) { return "rotate(20 " + d.x + "," + d.y + ")"; });
+  }
+});
+
+    </script>
+</body>
+</html>
