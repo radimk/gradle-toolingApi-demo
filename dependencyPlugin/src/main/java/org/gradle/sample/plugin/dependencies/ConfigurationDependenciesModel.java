@@ -7,5 +7,7 @@ import java.util.List;
  */
 public interface ConfigurationDependenciesModel {
 
-    String sayHello();
+    List<GraphNode> getNodes();
+
+    List<GraphLink> getEdges();
 }

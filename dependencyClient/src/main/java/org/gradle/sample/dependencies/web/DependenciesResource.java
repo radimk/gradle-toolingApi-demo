@@ -9,20 +9,24 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-@Path("hello")
-public class HelloResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloResource.class);
+@Path("dependencies")
+public class DependenciesResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DependenciesResource.class);
 
     private final ModelProvider modelProvider;
 
-    public HelloResource() {
+    public DependenciesResource() {
         modelProvider = ModelProvider.getDefault();
     }
 
     @GET
-    public String hello() {
+    @Produces("application/json")
+    public GraphData getMyBean() {
         ConfigurationDependenciesModel model = modelProvider.getConfigurationDependencies();
         LOGGER.info("Retrieved dependencies: {}", model);
-        return model.sayHello();
+        GraphData graph = new GraphData(
+                model.getNodes(),
+                model.getEdges());
+        return graph;
     }
 }
